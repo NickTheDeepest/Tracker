@@ -14,7 +14,7 @@ protocol CreateTrackerViewControllerDelegate: AnyObject {
 
 class CreateTrackerViewController: UIViewController {
    
-    public weak var delegate: CreateTrackerViewControllerDelegate?
+    weak var delegate: CreateTrackerViewControllerDelegate?
     
     private lazy var label: UILabel = {
         let label = UILabel()

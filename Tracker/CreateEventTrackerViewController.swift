@@ -268,7 +268,20 @@ class CreateEventViewController: UIViewController {
         present(scheduleViewController, animated: true)
     }
     
-    func updateCreateEventButton() {
+    @objc func textFieldChanged() {
+        guard let number = textField.text?.count else { return }
+        numberOfCharacters = number
+        if numberOfCharacters < limitNumberOfCharacters {
+            errorLabel.text = ""
+            heightAnchor?.constant = 0
+        } else {
+            errorLabel.text = "Ограничение 38 символов"
+            heightAnchor?.constant = 32
+        }
+        updateCreateEventButton()
+    }
+    
+    private func updateCreateEventButton() {
             createEventButton.isEnabled = textField.text?.isEmpty == false && selectedColor != nil && !selectedEmoji.isEmpty
             if event == .regular {
                 createEventButton.isEnabled = createEventButton.isEnabled && !schedule.isEmpty
@@ -376,7 +389,7 @@ class CreateEventViewController: UIViewController {
         NSLayoutConstraint.activate(constraints)
     }
     
-    func updateScheduleButton() {
+    private func updateScheduleButton() {
         if scheduleSubTitle.isEmpty {
             scheduleButton.addSubview(scheduleButtonTitle)
             NSLayoutConstraint.activate([
@@ -393,20 +406,6 @@ class CreateEventViewController: UIViewController {
             scheduleButtonSubTitle.bottomAnchor.constraint(equalTo: scheduleButton.bottomAnchor, constant: -13)
             ])
             scheduleButtonSubTitle.text = scheduleSubTitle
-        }
-        
-        updateCreateEventButton()
-    }
-    
-    @objc func textFieldChanged() {
-        guard let number = textField.text?.count else { return }
-        numberOfCharacters = number
-        if numberOfCharacters < limitNumberOfCharacters {
-            errorLabel.text = ""
-            heightAnchor?.constant = 0
-        } else {
-            errorLabel.text = "Ограничение 38 символов"
-            heightAnchor?.constant = 32
         }
         updateCreateEventButton()
     }

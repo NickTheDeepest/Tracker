@@ -63,10 +63,12 @@ class TrackersViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupNavigationBar()
+        updateCategories()
         view.addSubview(imageView)
         view.addSubview(textLabel)
         view.addSubview(searchTextField)
         view.addSubview(collectionView)
+        
         
         NSLayoutConstraint.activate([
             imageView.widthAnchor.constraint(equalToConstant: 80),
