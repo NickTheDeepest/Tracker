@@ -237,6 +237,8 @@ class CreateEventViewController: UIViewController {
         view.backgroundColor = .white
         addSubviews()
         setupLayout()
+//        label.setContentCompressionResistancePriority(.required, for: .vertical)
+        
         emojiAndColorsCollectionView.allowsMultipleSelection = true
     }
     
@@ -320,6 +322,7 @@ class CreateEventViewController: UIViewController {
         var constraints = [
             label.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             label.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 27),
+            label.heightAnchor.constraint(equalToConstant: 22),
             
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
