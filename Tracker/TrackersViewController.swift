@@ -67,7 +67,7 @@ class TrackersViewController: UIViewController {
         currentDate = Calendar.current.dateComponents([.weekday], from: Date()).weekday
         setupNavigationBar()
         updateCategories()
-        completedTrackers = try! self.trackerRecordStore.fetchTrackerRecord()
+        completedTrackers = (try? self.trackerRecordStore.fetchTrackerRecord()) ?? []
         view.addSubview(imageView)
         view.addSubview(textLabel)
         view.addSubview(searchTextField)
@@ -262,12 +262,12 @@ extension TrackersViewController: CreateTrackerViewControllerDelegate {
                 categoryToUpdate = categories[i]
             }
         }
-        if categoryToUpdate != nil {
-            try? trackerCategoryStore.addTracker(tracker, to: categoryToUpdate!)
+        if let categoryToUpdate {
+            try? trackerCategoryStore.addTracker(tracker, to: categoryToUpdate)
         } else {
             let newCategory = TrackerCategory(title: categoryName, trackers: [tracker])
             categoryToUpdate = newCategory
-            try? trackerCategoryStore.addNewTrackerCategory(categoryToUpdate!)
+            try? trackerCategoryStore.addNewTrackerCategory(newCategory)
         }
         updateCategories()
         dismiss(animated: true)

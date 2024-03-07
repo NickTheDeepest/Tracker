@@ -336,7 +336,7 @@ class CreateEventViewController: UIViewController {
             
             errorLabel.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 0),
             errorLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
-            heightAnchor!,
+            heightAnchor,
             
             createEventView.topAnchor.constraint(equalTo: errorLabel.bottomAnchor, constant: 16),
             createEventView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -372,7 +372,7 @@ class CreateEventViewController: UIViewController {
             createEventButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -34),
             createEventButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: (view.frame.width/2) + 4),
             createEventButton.heightAnchor.constraint(equalToConstant: 60)
-        ]
+        ].compactMap{ $0 }
         
         if event == .regular {
             constraints += [
@@ -486,17 +486,17 @@ extension CreateEventViewController: UICollectionViewDelegate {
         let section = indexPath.section
         let cell = collectionView.cellForItem(at: indexPath) as? EmojiAndColorsCollectionViewCell
         if section == 0 {
-            if selectedEmojiCell != nil {
-                collectionView.deselectItem(at: selectedEmojiCell!, animated: true)
-                collectionView.cellForItem(at: selectedEmojiCell!)?.backgroundColor = .white
+            if let selectedEmojiCell {
+                collectionView.deselectItem(at: selectedEmojiCell, animated: true)
+                collectionView.cellForItem(at: selectedEmojiCell)?.backgroundColor = .white
             }
             cell?.backgroundColor = .backgroundColor
             selectedEmoji = cell?.emojiLabel.text ?? ""
             selectedEmojiCell = indexPath
         } else if section == 1 {
-            if selectedColorCell != nil {
-                collectionView.deselectItem(at: selectedColorCell!, animated: true)
-                collectionView.cellForItem(at: selectedColorCell!)?.layer.borderWidth = 0
+            if let selectedColorCell {
+                collectionView.deselectItem(at: selectedColorCell, animated: true)
+                collectionView.cellForItem(at: selectedColorCell)?.layer.borderWidth = 0
             }
             cell?.layer.borderWidth = 3
             cell?.layer.cornerRadius = 8

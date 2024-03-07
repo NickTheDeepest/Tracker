@@ -35,7 +35,7 @@ class TrackerCategoryStore: NSObject {
     static let shared = TrackerCategoryStore()
     private let trackerStore = TrackerStore()
     private let context: NSManagedObjectContext
-    private var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData>!
+    private var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData>?
     weak var delegate: TrackerCategoryStoreDelegate?
     private var insertedIndexes: IndexSet?
     private var deletedIndexes: IndexSet?
@@ -44,18 +44,18 @@ class TrackerCategoryStore: NSObject {
     
     convenience override init() {
         let context = DatabaseManager.shared.context
-        try! self.init(context: context)
+        self.init(context: context)
     }
     
     var trackerCategories: [TrackerCategory] {
         guard
-            let objects = self.fetchedResultsController.fetchedObjects,
+            let objects = self.fetchedResultsController?.fetchedObjects,
             let trackerCategories = try? objects.map({ try self.trackerCategory(from: $0)})
         else { return [] }
         return trackerCategories
     }
     
-    init(context: NSManagedObjectContext) throws {
+    init(context: NSManagedObjectContext) {
         self.context = context
         super.init()
         
@@ -71,7 +71,7 @@ class TrackerCategoryStore: NSObject {
         )
         controller.delegate = self
         self.fetchedResultsController = controller
-        try controller.performFetch()
+        try? controller.performFetch()
     }
     
     func addNewTrackerCategory(_ trackerCategory: TrackerCategory) throws {
@@ -97,7 +97,7 @@ class TrackerCategoryStore: NSObject {
     }
     
     func addTracker(_ tracker: Tracker, to trackerCategory: TrackerCategory) throws {
-        let category = fetchedResultsController.fetchedObjects?.first {
+        let category = fetchedResultsController?.fetchedObjects?.first {
             $0.title == trackerCategory.title
         }
         let trackerCoreData = TrackerCoreData(context: context)
@@ -167,19 +167,23 @@ extension TrackerCategoryStore: NSFetchedResultsControllerDelegate {
     func controllerDidChangeContent(
         _ controller: NSFetchedResultsController<NSFetchRequestResult>)
     {
+        guard let insertedIndexes else { return }
+        guard let deletedIndexes else { return }
+        guard let updatedIndexes else { return }
+        guard let movedIndexes else { return }
         delegate?.store(
             self,
             didUpdate: TrackerCategoryStoreUpdate(
-                insertedIndexes: insertedIndexes!,
-                deletedIndexes: deletedIndexes!,
-                updatedIndexes: updatedIndexes!,
-                movedIndexes: movedIndexes!
+                insertedIndexes: insertedIndexes,
+                deletedIndexes: deletedIndexes,
+                updatedIndexes: updatedIndexes,
+                movedIndexes: movedIndexes
             )
         )
-        insertedIndexes = nil
-        deletedIndexes = nil
-        updatedIndexes = nil
-        movedIndexes = nil
+        self.insertedIndexes = nil
+        self.deletedIndexes = nil
+        self.updatedIndexes = nil
+        self.movedIndexes = nil
     }
     
     func controller(

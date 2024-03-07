@@ -45,7 +45,9 @@ class ScheduleViewController: UIViewController {
         tableView.register(WeekdayTableViewCell.self, forCellReuseIdentifier: WeekdayTableViewCell.identifier)
         tableView.layer.cornerRadius = 16
         tableView.separatorColor = .gray
-        tableView.frame = CGRect(x: 0, y: 0, width: Int(width), height: 525)
+        tableView.backgroundView = nil
+        tableView.backgroundColor = .backgroundColor
+        tableView.frame = CGRect(x: 16, y: 0, width: Int(width), height: 525)
         tableView.dataSource = self
         tableView.delegate = self
         tableView.translatesAutoresizingMaskIntoConstraints = false
