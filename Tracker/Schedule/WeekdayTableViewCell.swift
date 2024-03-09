@@ -43,6 +43,7 @@ final class WeekdayTableViewCell: UITableViewCell {
     private func setupView() {
         self.contentView.addSubview(label)
         self.contentView.addSubview(switchCell)
+        self.backgroundColor = .backgroundColor
     }
     
     private func setupLayout() {

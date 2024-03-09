@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-struct Tracker {
+struct Tracker: Hashable {
     
     let id: UUID
     let name: String
