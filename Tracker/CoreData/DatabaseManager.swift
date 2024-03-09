@@ -48,6 +48,4 @@ final class DatabaseManager {
             }
         }
     }
-  
-   
 }
