@@ -96,6 +96,7 @@ class TrackersViewController: UIViewController {
         ])
         collectionView.dataSource = self
         collectionView.delegate = self
+        trackerCategoryStore.delegate = self
         
         
     }
@@ -269,7 +270,6 @@ extension TrackersViewController: CreateTrackerViewControllerDelegate {
             categoryToUpdate = newCategory
             try? trackerCategoryStore.addNewTrackerCategory(newCategory)
         }
-        updateCategories()
         dismiss(animated: true)
     }
 }
@@ -287,6 +287,13 @@ extension TrackersViewController: TrackersCollectionViewCellDelegate {
             completedTrackers.append(TrackerRecord(id: id, date: datePicker.date))
             try? trackerRecordStore.addNewTrackerRecord(TrackerRecord(id: id, date: datePicker.date))
         }
+        collectionView.reloadData()
+    }
+}
+
+extension TrackersViewController: TrackerCategoryStoreDelegate {
+    func store(_ store: TrackerCategoryStore, didUpdate update: TrackerCategoryStoreUpdate) {
+        updateCategories()
         collectionView.reloadData()
     }
 }
