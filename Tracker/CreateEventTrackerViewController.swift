@@ -128,28 +128,6 @@ class CreateEventViewController: UIViewController {
         return label
     }()
     
-    private lazy var plusButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .color2
-        button.setImage(UIImage(systemName: "plus"), for: .normal)
-        button.tintColor = .white
-        button.layer.cornerRadius = 17
-        button.addTarget(self, action: #selector(plusButtonAction), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
-    private lazy var minusButton: UIButton = {
-        let button = UIButton()
-        button.backgroundColor = .color2
-        button.layer.cornerRadius = 17
-        button.setImage(UIImage(systemName: "minus"), for: .normal)
-        button.tintColor = .white
-        button.addTarget(self, action: #selector(minusButtonAction), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
     private lazy var label: UILabel = {
         let label = UILabel()
         label.textColor = .ypBlack
@@ -354,11 +332,11 @@ class CreateEventViewController: UIViewController {
             completedDaysBackgroundView.isHidden = false
             updateScheduleButton()
             updateCategoryButton()
-            updatePlusMinusButtons()
+            updateCompletedTrackers()
         }
     }
     
-    private func updatePlusMinusButtons() {
+    private func updateCompletedTrackers() {
         if let editTracker = editTracker,
            let editTrackerDate = editTrackerDate {
             completedTrackers = trackerRecordStore.trackerRecords
@@ -366,16 +344,6 @@ class CreateEventViewController: UIViewController {
                 record.id == editTracker.id
             }).count
             completedDaysLabel.text = String.localizedStringWithFormat(NSLocalizedString("numberOfDay", comment: "дней"), completedCount)
-            if completedTrackers.firstIndex(where: { record in
-                record.id == editTracker.id &&
-                record.date.yearMonthDayComponents == editTrackerDate.yearMonthDayComponents
-            }) != nil {
-                minusButton.isEnabled = true
-                plusButton.isEnabled = false
-            } else {
-                minusButton.isEnabled = false
-                plusButton.isEnabled = true
-            }
         }
     }
     
@@ -439,8 +407,6 @@ class CreateEventViewController: UIViewController {
         view.addSubview(titleBackgroundView)
         titleBackgroundView.addSubview(label)
         scrollView.addSubview(completedDaysBackgroundView)
-        completedDaysBackgroundView.addSubview(plusButton)
-        completedDaysBackgroundView.addSubview(minusButton)
         completedDaysBackgroundView.addSubview(completedDaysLabel)
         scrollView.addSubview(textField)
         scrollView.addSubview(errorLabel)
@@ -488,15 +454,6 @@ class CreateEventViewController: UIViewController {
             completedDaysLabel.widthAnchor.constraint(equalToConstant: 120),
             completedDaysLabel.centerXAnchor.constraint(equalTo: completedDaysBackgroundView.centerXAnchor),
             completedDaysLabel.heightAnchor.constraint(equalToConstant: 38),
-            
-            plusButton.trailingAnchor.constraint(equalTo: completedDaysBackgroundView.trailingAnchor, constant: -78),
-            plusButton.widthAnchor.constraint(equalToConstant: 34),
-            plusButton.heightAnchor.constraint(equalToConstant: 34),
-            
-            minusButton.leadingAnchor.constraint(equalTo: completedDaysBackgroundView.leadingAnchor, constant: 78),
-            minusButton.widthAnchor.constraint(equalToConstant: 34),
-            minusButton.heightAnchor.constraint(equalToConstant: 34),
-            minusButton.topAnchor.constraint(equalTo: completedDaysBackgroundView.topAnchor),
             
             textField.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: textFieldTop),
             textField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
@@ -599,30 +556,6 @@ class CreateEventViewController: UIViewController {
                 categoryButtonSubTitle.bottomAnchor.constraint(equalTo: categoryButton.bottomAnchor, constant: -13)])
                 categoryButtonSubTitle.text = categorySubTitle
         }
-    }
-    
-    @objc func plusButtonAction() {
-        if let editTracker = editTracker,
-           let editTrackerDate = editTrackerDate {
-            let record = TrackerRecord(id: editTracker.id, date: editTrackerDate)
-            completedTrackers.append(record)
-            try? trackerRecordStore.addNewTrackerRecord(record)
-        }
-        updatePlusMinusButtons()
-    }
-    
-    @objc func minusButtonAction() {
-        if let editTracker = editTracker,
-           let editTrackerDate = editTrackerDate {
-            if let index = completedTrackers.firstIndex(where: { record in
-                record.id == editTracker.id &&
-                record.date.yearMonthDayComponents == editTrackerDate.yearMonthDayComponents
-            }) {
-                completedTrackers.remove(at: index)
-                try? trackerRecordStore.deleteTrackerRecord(with: editTracker.id, date: editTrackerDate)
-            }
-        }
-        updatePlusMinusButtons()
     }
     
     @objc func textFieldChanged() {
