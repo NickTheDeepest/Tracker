@@ -14,7 +14,7 @@ class TrackersSupplementaryView: UICollectionReusableView {
     
     var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .ypBlack
         label.font = .boldSystemFont(ofSize: 19)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label

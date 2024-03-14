@@ -19,8 +19,10 @@ final class TabBarController: UITabBarController {
     }
     
     private func setupTabBar() {
-        trackerViewController.tabBarItem = UITabBarItem(title: "Трекеры", image: UIImage(named: "record.circle.fill"), selectedImage: nil)
-        statisticViewController.tabBarItem = UITabBarItem(title: "Статистика", image: UIImage(named: "hare.fill"), selectedImage: nil)
+        let statTitle = NSLocalizedString("statistics", comment: "statistics")
+        let trackTitle = NSLocalizedString("trackersTitle", comment: "trackersTitle")
+        trackerViewController.tabBarItem = UITabBarItem(title: trackTitle, image: UIImage(named: "record.circle.fill"), selectedImage: nil)
+        statisticViewController.tabBarItem = UITabBarItem(title: statTitle, image: UIImage(named: "hare.fill"), selectedImage: nil)
         tabBar.layer.borderWidth = 0.3
         tabBar.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.2).cgColor
         tabBar.clipsToBounds = true

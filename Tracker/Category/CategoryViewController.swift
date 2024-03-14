@@ -14,7 +14,7 @@ class CategoryViewController: UIViewController {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .ypBlack
         label.text = "Категория"
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false

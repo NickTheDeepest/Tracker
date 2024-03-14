@@ -9,16 +9,17 @@ import Foundation
 import UIKit
 
 protocol CreateTrackerViewControllerDelegate: AnyObject {
-    func createTracker(_ tracker: Tracker, categoryName: String)
+    func createTracker(
+        _ tracker: Tracker,
+        categoryName: String)
 }
 
 class CreateTrackerViewController: UIViewController {
-   
-    weak var delegate: CreateTrackerViewControllerDelegate?
+    public weak var delegate: CreateTrackerViewControllerDelegate?
     
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .ypBlack
         label.text = "Создание трекера"
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -28,6 +29,7 @@ class CreateTrackerViewController: UIViewController {
     private lazy var createRegularEventButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitle("Привычка", for: .normal)
+        button.setTitleColor(.ypWhite, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.backgroundColor = .ypBlack
         button.layer.cornerRadius = 16
@@ -39,6 +41,7 @@ class CreateTrackerViewController: UIViewController {
     private lazy var createIrregularEventButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitle("Нерегулярное событие", for: .normal)
+        button.setTitleColor(.ypWhite, for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         button.backgroundColor = .ypBlack
         button.layer.cornerRadius = 16
@@ -49,7 +52,7 @@ class CreateTrackerViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .ypWhite
         addSubviews()
         setupLayout()
     }
@@ -94,7 +97,9 @@ class CreateTrackerViewController: UIViewController {
 
 extension CreateTrackerViewController: CreateEventViewControllerDelegate {
     
-    func createTracker(_ tracker: Tracker, categoryName: String) {
-        delegate?.createTracker(tracker, categoryName: categoryName)
-    }
+    func createTracker(
+        _ tracker: Tracker,
+        categoryName: String) {
+            delegate?.createTracker(tracker, categoryName: categoryName)
+        }
 }

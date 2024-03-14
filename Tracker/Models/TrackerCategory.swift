@@ -7,12 +7,12 @@
 
 import Foundation
 
-struct TrackerCategory {
+struct TrackerCategory: Hashable {
     
     let title: String
     let trackers: [Tracker]
     
-    func visibleTrackers(filterString: String) -> [Tracker] {
+    func visibleTrackers(filterString: String, pin: Bool?) -> [Tracker] {
         if filterString.isEmpty {
             return trackers
         } else {

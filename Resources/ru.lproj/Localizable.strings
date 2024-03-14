@@ -1,0 +1,17 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Никита on 12.03.2024.
+  
+*/
+
+trackersTitle = "Трекеры";
+statistics = "Статистика";
+filters = "Фильтры";
+stubTitle = "Что будем отслеживать?";
+nothingFound = "Ничего не найдено";
+search = "Поиск";
+cancel = "Отмена";
+completed = "Трекеров завершено";
+analyze = "Анализировать пока нечего";

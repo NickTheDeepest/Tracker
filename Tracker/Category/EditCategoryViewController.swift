@@ -28,7 +28,8 @@ final class EditCategoryViewController: UIViewController {
         textField.layer.cornerRadius = 16
         textField.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         textField.translatesAutoresizingMaskIntoConstraints = false
-        textField.indent(size: 10)
+        textField.leftView = UIView(frame: CGRect(x: textField.frame.minX, y: textField.frame.minY, width: 10, height: textField.frame.height))
+        textField.leftViewMode = .always
         textField.text = editableCategory?.title
         UITextField.appearance().clearButtonMode = .whileEditing
         textField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
