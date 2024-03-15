@@ -124,21 +124,26 @@ extension ScheduleViewController: UITableViewDataSource {
         return Weekday.allCases.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let weekdayCell = tableView.dequeueReusableCell(withIdentifier: WeekdayTableViewCell.identifier) as? WeekdayTableViewCell else {
-            return UITableViewCell()
+    func tableView(
+        _ tableView: UITableView,
+        cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+            guard let weekdayCell = tableView.dequeueReusableCell(withIdentifier: WeekdayTableViewCell.identifier) as? WeekdayTableViewCell else {
+                return UITableViewCell()
+            }
+            let weekday = Weekday.allCases[indexPath.row]
+            weekdayCell.delegate = self
+            weekdayCell.contentView.backgroundColor = .backgroundColor
+            weekdayCell.selectionStyle = .none
+            weekdayCell.label.text = Weekday.allCases[indexPath.row].rawValue
+            weekdayCell.weekday = weekday
+            weekdayCell.switchCell.isOn = schedule.contains(weekday)
+            if indexPath.row == 6 {
+                weekdayCell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
+            } else {
+                weekdayCell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+            }
+            return weekdayCell
         }
-        weekdayCell.delegate = self
-        weekdayCell.selectionStyle = .none
-        weekdayCell.label.text = Weekday.allCases[indexPath.row].rawValue
-        weekdayCell.weekday = Weekday.allCases[indexPath.row]
-        if indexPath.row == 6 {
-            weekdayCell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
-        } else {
-            weekdayCell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        }
-        return weekdayCell
-    }
 }
 
 extension ScheduleViewController: UITableViewDelegate {

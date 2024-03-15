@@ -14,19 +14,19 @@ enum Event {
     
     var titleText: String {
         switch self {
-            case .regular:
-                return "Новая привычка"
-            case .irregular:
-                return "Новое нерегулярное событие"
+        case .regular:
+            return "Новая привычка"
+        case .irregular:
+            return "Новое нерегулярное событие"
         }
     }
     
     var editTitleText: String {
         switch self {
-            case .regular:
-                return "Редактирование привычки"
-            case .irregular:
-                return "Редактирование привычки"
+        case .regular:
+            return "Редактирование привычки"
+        case .irregular:
+            return "Редактирование привычки"
         }
     }
 }
@@ -554,7 +554,7 @@ class CreateEventViewController: UIViewController {
                 categoryButtonTitle.topAnchor.constraint(equalTo: categoryButton.topAnchor, constant: 15),
                 categoryButtonSubTitle.leadingAnchor.constraint(equalTo: categoryButton.leadingAnchor, constant: 16),
                 categoryButtonSubTitle.bottomAnchor.constraint(equalTo: categoryButton.bottomAnchor, constant: -13)])
-                categoryButtonSubTitle.text = categorySubTitle
+            categoryButtonSubTitle.text = categorySubTitle
         }
     }
     
@@ -722,12 +722,12 @@ extension CreateEventViewController: UICollectionViewDelegateFlowLayout {
         
         var id: String
         switch kind {
-            case UICollectionView.elementKindSectionHeader:
-                id = "header"
-            case UICollectionView.elementKindSectionFooter:
-                id = "footer"
-            default:
-                id = ""
+        case UICollectionView.elementKindSectionHeader:
+            id = "header"
+        case UICollectionView.elementKindSectionFooter:
+            id = "footer"
+        default:
+            id = ""
         }
         
         guard let view = emojiAndColorCollectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? EmojiAndColorsSupplementaryView else { return UICollectionReusableView() }

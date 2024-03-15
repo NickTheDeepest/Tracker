@@ -135,7 +135,7 @@ class CategoryViewController: UIViewController {
                                       style: .cancel))
         present(alert, animated: true, completion: nil)
     }
-
+    
     func makeContextMenu(_ indexPath: IndexPath) -> UIMenu {
         let category = viewModel.categories[indexPath.row]
         let rename = UIAction(title: "Редактировать", image: nil) { [weak self] action in

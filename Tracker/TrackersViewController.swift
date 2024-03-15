@@ -16,7 +16,7 @@ class TrackersViewController: UIViewController, StatisticsUpdateDelegate {
     func updateStatistics() {
         return
     }
-
+    
     private let analytics = Analytics()
     private let trackerCategoryStore = TrackerCategoryStore()
     private let trackerRecordStore = TrackerRecordStore()
@@ -35,14 +35,14 @@ class TrackersViewController: UIViewController, StatisticsUpdateDelegate {
     private let nothingFound = NSLocalizedString("nothingFound", comment: "nothingFound")
     private let search = NSLocalizedString("search", comment: "search")
     private let cancel = NSLocalizedString("cancel", comment: "cancel")
-
+    
     private lazy var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.image = UIImage(named: "1")
         return imageView
     }()
-
+    
     private lazy var textLabel: UILabel = {
         let textLabel = UILabel()
         textLabel.textColor = .ypBlack
@@ -51,7 +51,7 @@ class TrackersViewController: UIViewController, StatisticsUpdateDelegate {
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         return textLabel
     }()
-
+    
     private lazy var datePicker: UIDatePicker = {
         let datePicker = UIDatePicker()
         datePicker.backgroundColor = .white
@@ -60,13 +60,13 @@ class TrackersViewController: UIViewController, StatisticsUpdateDelegate {
         datePicker.layer.masksToBounds = true
         return datePicker
     }()
-
+    
     private lazy var dateFormatter: DateFormatter = {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yy"
         return dateFormatter
     }()
-
+    
     private lazy var searchTextField: UITextField = {
         let searchTextField = UITextField()
         searchTextField.placeholder = search
@@ -80,7 +80,7 @@ class TrackersViewController: UIViewController, StatisticsUpdateDelegate {
         searchTextField.addTarget(self, action: #selector(textFieldChanged), for: .editingChanged)
         return searchTextField
     }()
-
+    
     private lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.register(TrackersCollectionViewCell.self, forCellWithReuseIdentifier: TrackersCollectionViewCell.identifier)
@@ -117,7 +117,7 @@ class TrackersViewController: UIViewController, StatisticsUpdateDelegate {
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
@@ -138,7 +138,7 @@ class TrackersViewController: UIViewController, StatisticsUpdateDelegate {
             imageView.heightAnchor.constraint(equalToConstant: 80),
             imageView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageView.topAnchor.constraint(equalTo: view.topAnchor, constant: 400),
-
+            
             textLabel.centerXAnchor.constraint(equalTo: imageView.centerXAnchor),
             textLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
             
@@ -146,9 +146,9 @@ class TrackersViewController: UIViewController, StatisticsUpdateDelegate {
             searchTextField.trailingAnchor.constraint(equalTo: cancelEditingButton.leadingAnchor, constant: -5),
             searchTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 7),
             searchTextField.heightAnchor.constraint(equalToConstant: 36),
-
+            
             datePicker.widthAnchor.constraint(equalToConstant: 100),
-
+            
             collectionView.topAnchor.constraint(equalTo: searchTextField.bottomAnchor, constant: 10),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -175,15 +175,15 @@ class TrackersViewController: UIViewController, StatisticsUpdateDelegate {
         trackerStore.delegate = self
         trackerRecordStore.delegate = self
     }
-
+    
     override func viewDidAppear(_ animated: Bool) {
         analytics.openScreenReport(screen: .main)
     }
-
+    
     override func viewDidDisappear(_ animated: Bool) {
         analytics.closeScreenReport(screen: .main)
     }
-
+    
     private func setupNavigationBar() {
         if let navigationBar = navigationController?.navigationBar {
             title = titleTrackers
@@ -202,51 +202,73 @@ class TrackersViewController: UIViewController, StatisticsUpdateDelegate {
             navigationBar.prefersLargeTitles = true
         }
     }
-
-
-    private func updateCategories() {
-            var freshCategories: [TrackerCategory] = []
-            var pinnedTrackers: [Tracker] = []
-        newCategories = trackerCategoryStore.trackerCategories
-            for category in newCategories {
-                var newTrackers: [Tracker] = []
-                for tracker in category.visibleTrackers(filterString: searchText, pin: nil) {
-                    guard let schedule = tracker.schedule else { return }
-                    let scheduleInts = schedule.map { $0.numberOfDay }
-                    if let day = currentDate, scheduleInts.contains(day) {
-                        if selectedFilter == .completed {
-                            if !completedTrackers.contains(where: { record in
-                                record.id == tracker.id &&
-                                record.date.yearMonthDayComponents == datePicker.date.yearMonthDayComponents
-                            }) {
-                                continue
-                            }
-                        }
-                        if selectedFilter == .uncompleted {
-                            if completedTrackers.contains(where: { record in
-                                record.id == tracker.id &&
-                                record.date.yearMonthDayComponents == datePicker.date.yearMonthDayComponents
-                            }) {
-                                continue
-                            }
-                        }
-                        if tracker.pinned == true {
-                            pinnedTrackers.append(tracker)
-                        } else {
     
-                            newTrackers.append(tracker)
+    
+    private func updateCategories() {
+        var freshCategories: [TrackerCategory] = []
+        var pinnedTrackers: [Tracker] = []
+        newCategories = trackerCategoryStore.trackerCategories
+        for category in newCategories {
+            var newTrackers: [Tracker] = []
+            for tracker in category.visibleTrackers(filterString: searchText, pin: nil) {
+                guard let schedule = tracker.schedule else { return }
+                let scheduleInts = schedule.map { $0.numberOfDay }
+                imageView.image = selectedFilter == nil ? UIImage(named: "1") : UIImage(named: "notFound")
+                textLabel.text = selectedFilter == nil ? stubTitle : nothingFound
+                if let day = currentDate, scheduleInts.contains(day) {
+                    if selectedFilter == .completed {
+                        if !completedTrackers.contains(where: { record in
+                            record.id == tracker.id &&
+                            record.date.yearMonthDayComponents == datePicker.date.yearMonthDayComponents
+                        }) {
+                            continue
                         }
                     }
-                    if newTrackers.count > 0 {
-                        let newCategory = TrackerCategory(title: category.title, trackers: newTrackers)
-                        freshCategories.append(newCategory)
+                    if selectedFilter == .uncompleted {
+                        if completedTrackers.contains(where: { record in
+                            record.id == tracker.id &&
+                            record.date.yearMonthDayComponents == datePicker.date.yearMonthDayComponents
+                        }) {
+                            continue
+                        }
+                    }
+                    if tracker.pinned == true {
+                        pinnedTrackers.append(tracker)
+                    } else {
+                        
+                        newTrackers.append(tracker)
                     }
                 }
             }
-            newCategories = freshCategories
-            self.pinnedTrackers = pinnedTrackers
-            collectionView.reloadData()
+            if newTrackers.count > 0 {
+                let newCategory = TrackerCategory(title: category.title, trackers: newTrackers)
+                freshCategories.append(newCategory)
+            }
         }
+        newCategories = freshCategories
+        self.pinnedTrackers = pinnedTrackers
+        collectionView.reloadData()
+    }
+    //    private func updateCategories() {
+    //           var freshCategories: [TrackerCategory] = []
+    //           newCategories = trackerCategoryStore.trackerCategories
+    //           for category in newCategories {
+    //               var newTrackers: [Tracker] = []
+    //               for tracker in category.visibleTrackers(filterString: searchText, pin: nil) {
+    //                   guard let schedule = tracker.schedule else { return }
+    //                   let scheduleInts = schedule.map { $0.numberOfDay }
+    //                   if let day = currentDate, scheduleInts.contains(day) {
+    //                       newTrackers.append(tracker)
+    //                   }
+    //               }
+    //               if newTrackers.count > 0 {
+    //                   let newCategory = TrackerCategory(title: category.title, trackers: newTrackers)
+    //                   freshCategories.append(newCategory)
+    //               }
+    //           }
+    //           newCategories = freshCategories
+    //           collectionView.reloadData()
+    //       }
     
     private func actionSheet(trackerToDelete: Tracker) {
         let alert = UIAlertController(title: "Уверены, что хотите удалить трекер?",
@@ -293,7 +315,7 @@ class TrackersViewController: UIViewController, StatisticsUpdateDelegate {
         }
         let rename = UIAction(title: "Редактировать", image: nil) { [weak self] action in
             self?.analytics.editTrackReport()
-
+            
             let editTrackerVC = CreateEventViewController(.regular)
             editTrackerVC.editTracker = tracker
             editTrackerVC.editTrackerDate = self?.datePicker.date ?? Date()
@@ -303,12 +325,12 @@ class TrackersViewController: UIViewController, StatisticsUpdateDelegate {
         let delete = UIAction(title: "Удалить", image: nil, attributes: .destructive) { [weak self] action in
             self?.actionSheet(trackerToDelete: tracker)
             self?.analytics.deleteTrackReport()
-
+            
         }
         return UIMenu(children: [pin, rename, delete])
     }
-
-
+    
+    
     @objc func dateChanged(_ sender: UIDatePicker) {
         let comp = Calendar.current.dateComponents([.weekday], from: sender.date)
         if let day = comp.weekday {
@@ -316,7 +338,7 @@ class TrackersViewController: UIViewController, StatisticsUpdateDelegate {
             updateCategories()
         }
     }
-
+    
     @objc func newTracker() {
         analytics.addTrackReport()
         let trackersViewController = CreateTrackerViewController()
@@ -434,12 +456,12 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
     ) -> UICollectionReusableView {
         var id: String
         switch kind {
-            case UICollectionView.elementKindSectionHeader:
-                id = "header"
-            case UICollectionView.elementKindSectionFooter:
-                id = "footer"
-            default:
-                id = ""
+        case UICollectionView.elementKindSectionHeader:
+            id = "header"
+        case UICollectionView.elementKindSectionFooter:
+            id = "footer"
+        default:
+            id = ""
         }
         
         guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? TrackersSupplementaryView else { return UICollectionReusableView() }
@@ -470,7 +492,7 @@ extension TrackersViewController: CreateTrackerViewControllerDelegate {
     func createTracker(
         _ tracker: Tracker,
         categoryName: String) {
-            var categoryToUpdate: TrackerCategory? = nil
+            var categoryToUpdate: TrackerCategory?
             let categories: [TrackerCategory] = trackerCategoryStore.trackerCategories
             
             for i in 0..<categories.count {
@@ -482,8 +504,8 @@ extension TrackersViewController: CreateTrackerViewControllerDelegate {
                 try? trackerCategoryStore.addTracker(tracker, to: categoryToUpdate)
             } else {
                 let newCategory = TrackerCategory(title: categoryName, trackers: [tracker])
-                let categoryToUpdate = newCategory
-                    try? trackerCategoryStore.addNewTrackerCategory(categoryToUpdate)
+                categoryToUpdate = newCategory
+                try? trackerCategoryStore.addNewTrackerCategory(newCategory)
             }
             dismiss(animated: true)
         }
@@ -569,16 +591,16 @@ extension TrackersViewController: FiltersViewControllerDelegate {
         selectedFilter = filter
         searchText = ""
         switch filter {
-            case .all:
-                updateCategories()
-            case .today:
-                datePicker.date = Date()
-                dateChanged(datePicker)
-                updateCategories()
-            case .completed:
-                updateCategories()
-            case .uncompleted:
-                updateCategories()
+        case .all:
+            updateCategories()
+        case .today:
+            datePicker.date = Date()
+            dateChanged(datePicker)
+            updateCategories()
+        case .completed:
+            updateCategories()
+        case .uncompleted:
+            updateCategories()
         }
     }
 }

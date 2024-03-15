@@ -25,7 +25,7 @@ final class TrackersCollectionViewCell: UICollectionViewCell {
     private let limitNumberOfCharacters = 38
     
     private lazy var pinImageView: UIImageView = {
-       let image = UIImageView()
+        let image = UIImageView()
         image.image = UIImage(named: "pinSquare")
         image.isHidden = false
         image.translatesAutoresizingMaskIntoConstraints = false

@@ -10,7 +10,7 @@ import SnapshotTesting
 @testable import Tracker
 
 final class TrackerTests: XCTestCase {
-
+    
     func testTrackersVCLight() {
         let window = UIWindow(frame: UIScreen.main.bounds)
         let vc = TabBarController()
@@ -22,5 +22,4 @@ final class TrackerTests: XCTestCase {
         guard let view = trackersVC?.view else { return }
         assertSnapshot(matching: view, as: .image)
     }
-
 }

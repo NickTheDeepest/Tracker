@@ -170,32 +170,32 @@ extension TrackerRecordStore: NSFetchedResultsControllerDelegate {
         newIndexPath: IndexPath?
     ) {
         switch type {
-            case .insert:
-                guard let indexPath = newIndexPath else {
-                    assertionFailure("insert indexPath - nil")
-                    return
-                }
-                insertedIndexes?.insert(indexPath.item)
-            case .delete:
-                guard let indexPath = indexPath else {
-                    assertionFailure("delete indexPath - nil")
-                    return
-                }
-                deletedIndexes?.insert(indexPath.item)
-            case .update:
-                guard let indexPath = indexPath else {
-                    assertionFailure("update indexPath - nil")
-                    return
-                }
-                updatedIndexes?.insert(indexPath.item)
-            case .move:
-                guard let oldIndexPath = indexPath, let newIndexPath = newIndexPath else {
-                    assertionFailure("move indexPath - nil")
-                    return
-                }
-                movedIndexes?.insert(.init(oldIndex: oldIndexPath.item, newIndex: newIndexPath.item))
-            @unknown default:
-                assertionFailure("unknown case")
+        case .insert:
+            guard let indexPath = newIndexPath else {
+                assertionFailure("insert indexPath - nil")
+                return
+            }
+            insertedIndexes?.insert(indexPath.item)
+        case .delete:
+            guard let indexPath = indexPath else {
+                assertionFailure("delete indexPath - nil")
+                return
+            }
+            deletedIndexes?.insert(indexPath.item)
+        case .update:
+            guard let indexPath = indexPath else {
+                assertionFailure("update indexPath - nil")
+                return
+            }
+            updatedIndexes?.insert(indexPath.item)
+        case .move:
+            guard let oldIndexPath = indexPath, let newIndexPath = newIndexPath else {
+                assertionFailure("move indexPath - nil")
+                return
+            }
+            movedIndexes?.insert(.init(oldIndex: oldIndexPath.item, newIndex: newIndexPath.item))
+        @unknown default:
+            assertionFailure("unknown case")
         }
     }
 }
