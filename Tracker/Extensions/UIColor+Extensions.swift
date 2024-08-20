@@ -16,6 +16,8 @@ extension UIColor {
     static var ypRed: UIColor { UIColor(named: "ypRed") ?? UIColor.red }
     static var ypBlack: UIColor { UIColor(named: "ypBlack") ?? UIColor.black }
     static var ypBlue: UIColor { UIColor(named: "ypBlue") ?? UIColor.blue }
+    static var ypWhite: UIColor { UIColor(named: "ypWhite") ?? UIColor.white }
+    static var datePickerColor: UIColor { UIColor(named: "datePickerColor") ?? UIColor.white }
     static var color1: UIColor { UIColor(named: "Color1") ?? UIColor.red }
     static var color2: UIColor { UIColor(named: "Color2") ?? UIColor.red }
     static var color3: UIColor { UIColor(named: "Color3") ?? UIColor.red }
@@ -35,6 +37,9 @@ extension UIColor {
     static var color17: UIColor { UIColor(named: "Color17") ?? UIColor.red }
     static var color18: UIColor { UIColor(named: "Color18") ?? UIColor.red }
     static var switchColor: UIColor { ypBlue }
+    static var gradientColor1 = UIColor(named: "gradientColor1") ?? UIColor.red
+    static var gradientColor2 = UIColor(named: "gradientColor2") ?? UIColor.green
+    static var gradientColor3 = UIColor(named: "gradientColor3") ?? UIColor.blue
     
     var hexString: String {
         let components = self.cgColor.components

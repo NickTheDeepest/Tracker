@@ -143,7 +143,7 @@ final class OnboardingViewController: UIPageViewController, UIPageViewController
         window.rootViewController = TabBarController()
         UserDefaults.standard.set(true, forKey: "isOnboardingShown")
     }
-        
+    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let viewControllerIndex = pages.firstIndex(of: viewController) else {
             return nil

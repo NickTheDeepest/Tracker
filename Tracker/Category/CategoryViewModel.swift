@@ -20,11 +20,11 @@ final class CategoryViewModel: NSObject {
             onChange?()
         }
     }
-
+    
     private let trackerCategoryStore = TrackerCategoryStore()
     private(set) var selectedCategory: TrackerCategory?
     private weak var delegate: CategoryViewModelDelegate?
-
+    
     init(delegate: CategoryViewModelDelegate?, selectedCategory: TrackerCategory?) {
         self.selectedCategory = selectedCategory
         self.delegate = delegate

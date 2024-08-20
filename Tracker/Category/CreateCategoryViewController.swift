@@ -26,7 +26,8 @@ final class CreateCategoryViewController: UIViewController {
     
     private lazy var textField: UITextField = {
         let textField = UITextField()
-        textField.indent(size: 10)
+        textField.leftView = UIView(frame: CGRect(x: textField.frame.minX, y: textField.frame.minY, width: 10, height: textField.frame.height))
+        textField.leftViewMode = .always
         textField.placeholder = "Введите название категории"
         textField.textColor = .ypBlack
         textField.backgroundColor = .backgroundColor.withAlphaComponent(0.3)
@@ -100,6 +101,6 @@ final class CreateCategoryViewController: UIViewController {
             addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             addCategoryButton.heightAnchor.constraint(equalToConstant: 60),
-       ])
+        ])
     }
 }

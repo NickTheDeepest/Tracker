@@ -14,7 +14,7 @@ class CategoryViewController: UIViewController {
     
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.textColor = .black
+        label.textColor = .ypBlack
         label.text = "Категория"
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -135,7 +135,7 @@ class CategoryViewController: UIViewController {
                                       style: .cancel))
         present(alert, animated: true, completion: nil)
     }
-
+    
     func makeContextMenu(_ indexPath: IndexPath) -> UIMenu {
         let category = viewModel.categories[indexPath.row]
         let rename = UIAction(title: "Редактировать", image: nil) { [weak self] action in
